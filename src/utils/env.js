@@ -1,4 +1,7 @@
+const dotenv = require('dotenv');
+
 function loadEnv() {
+    dotenv.config();
     const required = ['JWT_SECRET', 'DB_URI', 'PORT'];
     const missing = required.filter(key => !process.env[key]);
     if (missing.length) {
@@ -13,4 +16,4 @@ function loadEnv() {
     };
 }
 
-module.exports = loadEnv();
+module.exports = loadEnv;
