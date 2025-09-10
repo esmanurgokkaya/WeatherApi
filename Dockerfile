@@ -1,9 +1,27 @@
-FROM node:22
+ARG NODE_VERSION=22.17.0
 
-WORKDIR /app
+FROM node:${NODE_VERSION}-alpine
 
+# Use production node environment by default.
+ENV NODE_ENV production
+
+
+WORKDIR /usr/src/app
+
+
+# Copy package files and install dependencies as node user
+COPY package*.json ./
+
+RUN npm ci --omit=dev
+
+# Copy the rest of the source files into the image
 COPY . .
 
-RUN npm install
+# Run the application as a non-root user
+USER node
 
-CMD ["npm", "run", "dev"]
+# Expose the port that the application listens on.
+EXPOSE 3000
+
+# Run the application.
+CMD npm run dev
