@@ -20,3 +20,9 @@ DB_URI=
 ▶️ Run
 npm run dev   # development with nodemon
 npm start     # production
+
+
+npx prisma db push 
+
+npx prisma migrate deploy
+
