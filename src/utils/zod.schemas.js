@@ -1,4 +1,4 @@
-// zod ile validate et
+// Validate with zod
 import z from "zod";
 // register data zod
 const registerSchema = z.object({
