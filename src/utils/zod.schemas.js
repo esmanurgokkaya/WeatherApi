@@ -1,6 +1,5 @@
 // zod ile validate et
 import z from "zod";
-import { de } from "zod/locales";
 // register data zod
 const registerSchema = z.object({
   name: z.string().min(2),
