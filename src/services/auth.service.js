@@ -5,7 +5,7 @@ class AuthService {
 
     async register(data) {
         
-        // email control
+        // Check if email already exists
         const existingUser = await UserModel.getUserByEmail(data.email);
 
         if(existingUser){
