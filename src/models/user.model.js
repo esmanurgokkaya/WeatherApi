@@ -3,7 +3,7 @@ import prisma from '../config/db.js';
 const User = prisma.user;
 
 class UserModel{
-// static ekleyip eklememeye karar ver
+// Decide whether to add static methods
     async createUser(data) {
         return await User.create({data});
     }
