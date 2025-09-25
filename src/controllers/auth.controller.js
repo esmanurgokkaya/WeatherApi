@@ -5,7 +5,7 @@ class AuthController {
 
     async register(req,res){
         try {
-            // validation 
+            // validation
             const validateData = zodValidation.registerSchema.parse(req.body);
             const user = await AuthService.register(validateData);
             res.status(201).json(user);
