@@ -1,5 +1,6 @@
-const { Router } = require('express');
-const { ok } = require('../utils/apiResponse');
+import  Router  from 'express';
+import ok from '../utils/apiResponse.js';
+import AuthRoutes from './auth.route.js';
 
 const router = Router();
 router.get('/health', (req, res) => {
@@ -10,4 +11,9 @@ router.get('/health', (req, res) => {
   });
 });
 
-module.exports = router;
+
+// auth routes
+router.use('/auth', AuthRoutes)
+
+
+export default router;
