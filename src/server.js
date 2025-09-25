@@ -1,10 +1,10 @@
 // src/server.js
-const app = require('./app');
-const  loadEnv  = require('./utils/env');
+import app from './app.js';
+import loadEnv  from './utils/env.js';
 
 const { PORT } = loadEnv();
 
 app.listen(PORT, () => {
   console.log(` Server running on http://localhost:${PORT}`);
-  console.log(` Health: http://localhost:${PORT}/api/health`);
+  console.log(` Health: http://localhost:${PORT}/health`);
 });
