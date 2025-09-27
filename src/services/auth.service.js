@@ -26,7 +26,7 @@ class AuthService {
     async login(email, password) {
         const user = await UserModel.getUserByEmail(email);
 
-        if(!user){
+        if (!user){
             throw new Error("Invalid email or password");
         }
 
