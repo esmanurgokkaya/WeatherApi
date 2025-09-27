@@ -23,6 +23,21 @@ class AuthService {
 
         return User;
     }
+    async login(email, password) {
+        const user = await UserModel.getUserByEmail(email);
+
+        if(!user){
+            throw new Error("Invalid email or password");
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if(!isPasswordValid){
+            throw new Error("Invalid email or password");
+        }
+
+        return user;
+    }
 }
 export default new AuthService();
 
