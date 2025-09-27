@@ -36,7 +36,7 @@ class TokenService {
     const expiresIn = process.env.JWT_REFRESH_EXPIRES_IN || "7d";
     const refreshToken = jwt.sign(
       { userId, userEmail },
-      process.env.JWT_REFRESH_SECRET,
+      process.env.REFRESH_TOKEN_SECRET,
       { expiresIn }
     );
     // Calculate expiresAt
