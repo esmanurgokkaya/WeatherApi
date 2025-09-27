@@ -39,7 +39,7 @@ class TokenService {
       process.env.JWT_REFRESH_SECRET,
       { expiresIn }
     );
-    // expiresAt hesapla
+    // Calculate expiresAt
     const expiresAt = new Date(Date.now() + ms(expiresIn));
     await TokenModel.createRefreshToken(userId, refreshToken, expiresAt);
     return refreshToken;
