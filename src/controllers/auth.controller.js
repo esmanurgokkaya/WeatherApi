@@ -14,6 +14,16 @@ class AuthController {
         }
 
     }
+
+    async login(req,res){
+        try{
+            const validateData = zodValidation.loginSchema.parse(req.body);
+            const user = await AuthService.login(validateData.email, validateData.password);
+            res.status(200).json(user);
+        } catch (error) {
+            res.status(400).json({message: error.message});
+        }
+    }
 }
 
 export default new AuthController();
