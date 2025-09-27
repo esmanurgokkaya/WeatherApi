@@ -1,6 +1,7 @@
 import TokenModel from "../models/token.model.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import ms from "ms";
 dotenv.config();
 
 class TokenService {
@@ -32,14 +33,15 @@ class TokenService {
   }
 
   async generateRefreshToken(userId, userEmail) {
+    const expiresIn = process.env.JWT_REFRESH_EXPIRES_IN || "7d";
     const refreshToken = jwt.sign(
       { userId, userEmail },
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
-      }
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn }
     );
-    await TokenModel.createRefreshToken(userId, refreshToken);
+    // expiresAt hesapla
+    const expiresAt = new Date(Date.now() + ms(expiresIn));
+    await TokenModel.createRefreshToken(userId, refreshToken, expiresAt);
     return refreshToken;
   }
 
