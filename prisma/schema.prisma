@@ -27,6 +27,13 @@ model User {
   alerts    Alert[]
 }
 
+model refreshToken {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  token     String   @unique
+  expiresAt DateTime
+}
+
 model Location {
   id        String   @id @default(cuid())
   city      String?
