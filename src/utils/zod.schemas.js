@@ -13,6 +13,12 @@ const registerSchema = z.object({
     .regex(/[!@#$%^&*]/, "Must contain at least 1 special character"),
 });
 
+const loginSchema = z.object({
+  email: z.string().email().min(5).max(100),
+  password: z.string().min(6),
+});
+
 export default {
     registerSchema,
+    loginSchema,
 }
