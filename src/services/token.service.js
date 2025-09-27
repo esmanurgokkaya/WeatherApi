@@ -26,7 +26,7 @@ class TokenService {
 
   async verifyRefreshToken(token) {
     try {
-      return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+      return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
     } catch (error) {
       throw new Error("Invalid or expired refresh token");
     }
