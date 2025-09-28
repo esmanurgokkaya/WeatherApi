@@ -1,6 +1,7 @@
 import  Router  from 'express';
 import ok from '../utils/apiResponse.js';
 import AuthRoutes from './auth.route.js';
+import UserRoutes from './user.route.js';
 
 const router = Router();
 router.get('/health', (req, res) => {
@@ -13,7 +14,8 @@ router.get('/health', (req, res) => {
 
 
 // auth routes
-router.use('/auth', AuthRoutes)
+router.use('/auth', AuthRoutes);
+router.use('/profile', UserRoutes);
 
 
 export default router;
