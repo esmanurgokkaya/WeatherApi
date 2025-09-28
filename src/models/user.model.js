@@ -16,6 +16,19 @@ class UserModel{
         return await User.findUnique({ where: { id } });
     }
 
+    async updateUser(id, data) {
+        return await User.update({ where: { id }, data });
+    }
+
+    async deleteUser(id) {
+        return await User.delete({ where: { id } });
+    }
+
+    async getAllUsers() {
+        return await User.findMany();
+    }
+
+
 
 }
 
