@@ -36,9 +36,9 @@ class  UserService {
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        newPassword = hashedPassword;
 
-        return await UserModel.updateUser(id, { password: newPassword });
+
+        return await UserModel.updateUser(id, { password: hashedPassword });
     }
 
     async deleteUser(id){
