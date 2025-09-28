@@ -3,8 +3,10 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import ms from "ms";
 dotenv.config();
+// Can we perform the decode operation here?
 
 class TokenService {
+
   async generateAccessToken(userId, userEmail) {
     const accessToken = jwt.sign(
       { userId, userEmail },
@@ -36,7 +38,7 @@ class TokenService {
     const expiresIn = process.env.JWT_REFRESH_EXPIRES_IN || "7d";
     const refreshToken = jwt.sign(
       { userId, userEmail },
-      process.env.REFRESH_TOKEN_SECRET,
+      process.env.JWT_REFRESH_SECRET,
       { expiresIn }
     );
     // Calculate expiresAt
