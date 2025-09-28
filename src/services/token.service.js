@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import ms from "ms";
 dotenv.config();
-// decode işlemini  burda yapabilir miyiz?
+// Can we perform the decode operation here?
 
 class TokenService {
 
