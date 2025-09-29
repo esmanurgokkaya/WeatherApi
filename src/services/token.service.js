@@ -49,12 +49,22 @@ class TokenService {
     return refreshToken;
   }
 
+  async generateTokens(refreshToken){
+    const decoded = await this.verifyRefreshToken(refreshToken);
+    const newAccessToken = await this.generateAccessToken(decoded.userId, decoded.userEmail);
+    const newRefreshToken = await this.generateRefreshToken(decoded.userId, decoded.userEmail);
+    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+  }
   async findRefreshToken(token) {
     return await TokenModel.findRefreshToken(token);
   }
 
   async deleteRefreshToken(token) {
     return await TokenModel.deleteRefreshToken(token);
+  }
+
+  async deleteTokensByUserId(userId) {
+    return await TokenModel.deleteTokensByUserId(userId);
   }
 }
 
