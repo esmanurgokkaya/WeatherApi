@@ -49,7 +49,7 @@ class TokenService {
     return refreshToken;
   }
 
-  async generateTokens(refreshToken){
+  async generateTokens(refreshToken) {
     const decoded = await this.verifyRefreshToken(refreshToken);
     const newAccessToken = await this.generateAccessToken(decoded.userId, decoded.userEmail);
     const newRefreshToken = await this.generateRefreshToken(decoded.userId, decoded.userEmail);
