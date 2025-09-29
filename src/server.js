@@ -9,7 +9,7 @@ app.listen(PORT, () => {
   console.log(` Server running on http://localhost:${PORT}`);
   console.log(` Health: http://localhost:${PORT}/health`);
 });
-// Uygulama başlatıldığında expired tokenları temizle
+// Clean up expired tokens when application starts
 cleanupExpiredTokens();
 
 // Her saat başı expired tokenları temizle
