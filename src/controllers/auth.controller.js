@@ -59,7 +59,7 @@ class AuthController {
       if (!user) {
         return res.status(401).json({ message: "Invalid token" });
       }
-      // Kullanıcıya ait tüm refresh tokenları sil
+      // Delete all refresh tokens belonging to the user
       await TokenService.deleteTokensByUserId(user.id);
       res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
