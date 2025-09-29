@@ -49,8 +49,20 @@ class AuthController {
           .status(400)
           .json(error("Validation error", formatZodErrors(err)));
       }
+      // Check for authentication failure
+      if (
+        err.name === "AuthenticationError" ||
+        err.code === "AUTH_FAILED" ||
+        (typeof err.message === "string" &&
+          err.message.toLowerCase().includes("invalid email or password"))
+      ) {
+        return res
+          .status(401)
+          .json(error("Authentication failed: " + err.message, err.errors || null));
+      }
+      // For other errors, return 500
       res
-        .status(400)
+        .status(500)
         .json(error("Login failed: " + err.message, err.errors || null));
     }
   }
