@@ -74,8 +74,21 @@ class UserController {
           .status(400)
           .json(error("Validation error", formatZodErrors(err)));
       }
+      // Authentication failures (e.g., invalid token, incorrect old password)
+      if (
+        err.name === "UnauthorizedError" ||
+        err.name === "AuthenticationError" ||
+        err.message?.toLowerCase().includes("unauthorized") ||
+        err.message?.toLowerCase().includes("invalid password") ||
+        err.message?.toLowerCase().includes("incorrect password")
+      ) {
+        return res
+          .status(401)
+          .json(error("Authentication failed: " + err.message, err.errors || null));
+      }
+      // Other errors are treated as server errors
       res
-        .status(400)
+        .status(500)
         .json(
           error("Failed to update password: " + err.message, err.errors || null)
         );
