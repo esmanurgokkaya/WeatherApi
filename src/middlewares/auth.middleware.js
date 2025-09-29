@@ -1,20 +1,23 @@
-const jwt = require('jsonwebtoken');
-const { UnauthorizedError } = require('../utils/httpErrors');
+import TokenService from "../services/token.service.js";
 
-module.exports = function auth(required = true) {
-    return (req, res, next) => {
-        const header = req.headers.authorization || '';
-        const token = header.startsWith('Bearer ' ? header.slice(7) : null);
+export async function authenticate(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if(!authHeader){
+        return res.status(401).json({message: "Token missing"});
+    }
 
-        if(!token && required) return next(new UnauthorizedError('No token provided'));
-        if(!token) return next();
-
-        try {
-            const payload = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = payload;
-            next();
-        } catch (err) {
-            next(new UnauthorizedError('Invalid token'));
+    const token = authHeader.split(" ")[1];
+    if(!token){
+        return res.status(401).json({message: "Token missing"});
+    }
+    try {
+        const user = await TokenService.verifyAccessToken(token);
+        if(!user){
+            return res.status(401).json({message: "Invalid token"});
         }
-     };
-};
+        req.user = user;
+        next();
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid token" });
+    }
+}
