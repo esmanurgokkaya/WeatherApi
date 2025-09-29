@@ -99,7 +99,7 @@ class AuthController {
           .json(error("Validation error", formatZodErrors(err)));
       }
       res
-        .status(400)
+        .status(500)
         .json(error("Logout failed: " + err.message, err.errors || null));
     }
   }
