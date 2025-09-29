@@ -93,8 +93,26 @@ class UserController {
       await userService.deleteUser(id);
       res.status(200).json(success("User deleted successfully"));
     } catch (err) {
+      if (
+        err.name === "JsonWebTokenError" ||
+        err.name === "TokenExpiredError" ||
+        err.message?.toLowerCase().includes("invalid token")
+      ) {
+        return res
+          .status(401)
+          .json(error("Authentication failed: " + err.message, err.errors || null));
+      }
+      if (
+        err.name === "AuthorizationError" ||
+        err.message?.toLowerCase().includes("not authorized") ||
+        err.message?.toLowerCase().includes("permission denied")
+      ) {
+        return res
+          .status(403)
+          .json(error("Authorization failed: " + err.message, err.errors || null));
+      }
       res
-        .status(400)
+        .status(500)
         .json(
           error("Failed to delete user: " + err.message, err.errors || null)
         );
