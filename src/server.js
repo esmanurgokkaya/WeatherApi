@@ -12,7 +12,7 @@ app.listen(PORT, () => {
 // Clean up expired tokens when application starts
 cleanupExpiredTokens();
 
-// Her saat başı expired tokenları temizle
+// Clean up expired tokens every hour
 cron.schedule("0 * * * *", () => {
   cleanupExpiredTokens();
 });
