@@ -15,8 +15,19 @@ class AuthController {
           .status(400)
           .json(error("Validation error", formatZodErrors(err)));
       }
+      // Handle duplicate email or conflict errors
+      if (
+        err.code === 11000 || // MongoDB duplicate key error
+        err.code === "ER_DUP_ENTRY" || // MySQL duplicate entry
+        (err.message && err.message.toLowerCase().includes("email already exists"))
+      ) {
+        return res
+          .status(409)
+          .json(error("Conflict error: " + err.message, err.errors || null));
+      }
+      // Handle other server errors
       res
-        .status(400)
+        .status(500)
         .json(error("Registration failed: " + err.message, err.errors || null));
     }
   }
