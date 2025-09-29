@@ -54,7 +54,7 @@ class AuthController {
       if (!token) {
         return res.status(401).json({ message: "Token missing" });
       }
-      // Access tokenı doğrula ve kullanıcı bilgisini al
+      // Validate access token and get user information
       const user = await TokenService.verifyAccessToken(token);
       if (!user) {
         return res.status(401).json({ message: "Invalid token" });
