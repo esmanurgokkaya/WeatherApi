@@ -45,10 +45,32 @@ class UserController {
           .status(400)
           .json(error("Validation error", formatZodErrors(err)));
       }
+      // Authentication errors (e.g., invalid/expired token)
+      if (
+        err.name === "JsonWebTokenError" ||
+        err.name === "TokenExpiredError" ||
+        err.message?.toLowerCase().includes("jwt") ||
+        err.message?.toLowerCase().includes("token")
+      ) {
+        return res
+          .status(401)
+          .json(error("Authentication error: " + err.message, err.errors || null));
+      }
+      // Authorization errors (custom, e.g., forbidden)
+      if (
+        err.name === "AuthorizationError" ||
+        err.message?.toLowerCase().includes("not authorized") ||
+        err.message?.toLowerCase().includes("forbidden")
+      ) {
+        return res
+          .status(403)
+          .json(error("Authorization error: " + err.message, err.errors || null));
+      }
+      // All other errors are server errors
       res
-        .status(400)
+        .status(500)
         .json(
-          error("Failed to update user: " + err.message, err.errors || null)
+          error("Internal server error: " + err.message, err.errors || null)
         );
     }
   }
