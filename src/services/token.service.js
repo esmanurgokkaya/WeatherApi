@@ -35,6 +35,8 @@ class TokenService {
   }
 
   async generateRefreshToken(userId, userEmail) {
+    await TokenModel.deleteTokensByUserId(userId);
+
     const expiresIn = process.env.JWT_REFRESH_EXPIRES_IN || "7d";
     const refreshToken = jwt.sign(
       { userId, userEmail },
