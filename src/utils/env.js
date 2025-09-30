@@ -1,4 +1,4 @@
-const dotenv = require('dotenv');
+import dotenv  from 'dotenv';
 
 function loadEnv() {
     dotenv.config();
@@ -15,4 +15,4 @@ function loadEnv() {
     };
 }
 
-module.exports = loadEnv;
+export default loadEnv;

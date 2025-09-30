@@ -1,3 +1,5 @@
+import e  from "express";
+
 class HttpError extends Error {
   constructor(status, message) {
     super(message);
@@ -24,3 +26,5 @@ class NotFoundError extends HttpError {
         super(404, message);
     }
 }
+
+export { HttpError, BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError };

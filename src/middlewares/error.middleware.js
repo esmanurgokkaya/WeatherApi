@@ -1,5 +1,5 @@
-const { HttpError } = require('../utils/httpErrors');
-const { logger } = require('../utils/logger');
+import { HttpError } from '../utils/http.errors.js';
+import  logger  from '../utils/logger.js';
 
 function notFoundHandler(_req,_res, next) {
     next(new HttpError(404, 'Not Found'));
@@ -24,4 +24,4 @@ function errorHandler(err, _req, res, _next) {
   return res.status(500).json({ ok: false, error: 'Internal Server Error' });
 }
 
-module.exports = { notFoundHandler, errorHandler };
+export { notFoundHandler, errorHandler };
