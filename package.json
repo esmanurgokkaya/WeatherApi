@@ -42,6 +42,7 @@
     "supertest": "^7.1.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
     "zod": "^4.1.1"
   },
   "devDependencies": {
@@ -49,5 +50,6 @@
   },
   "prisma": {
     "seed": "node prisma/seed.js"
-  }
+  },
+  "type": "module"
 }

@@ -8,4 +8,4 @@ const logger ={
     debug: (...a) => isProd ? null : console.debug(`[${now()}] DEBUG `, ...a),
 };
 
-module.exports = logger;
+export default logger;
