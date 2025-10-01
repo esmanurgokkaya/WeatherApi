@@ -34,9 +34,19 @@ const updatePasswordSchema = z.object({
     .regex(/[!@#$%^&*]/, "Must contain at least 1 special character"),
 });
 
+const createLocationSchema = z.object({
+  city: z.string().min(2).max(100).optional(),
+  country: z.string().min(2).max(100).optional(),
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+  userId: z.string().min(1),
+  // alerts, WeatherCache, user, createdAt, updatedAt gibi alanlar genellikle otomatik veya ilişkili olduğu için eklenmez
+});
+
 export default {
     registerSchema,
     loginSchema,
     updateUserSchema,
     updatePasswordSchema,
+    createLocationSchema,
 }
