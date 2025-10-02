@@ -1,4 +1,4 @@
-import prisma from '../prisma/client.js';
+import prisma from '../config/db.js';
 
 const Location = prisma.location;
 
