@@ -12,8 +12,8 @@ class LocationModel {
         return await Location.findUnique( { where: { id } } );
     }
 
-    async getAllLocationsByUserId(user_id){
-        return await Location.findMany( { where: { user_id } } );
+    async getAllLocationsByUserId(userId){
+        return await Location.findMany( { where: { userId } } );
     }
 
     async updateLocation(id, data) {

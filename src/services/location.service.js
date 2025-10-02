@@ -10,8 +10,8 @@ class LocationService {
         return await LocationModel.getLocationById(id);
     }
 
-    async getAllLocationsByUserId(user_id) {
-        return await LocationModel.getAllLocationsByUserId(user_id);
+    async getAllLocationsByUserId(userId) {
+        return await LocationModel.getAllLocationsByUserId(userId);
     }
 
     async updateLocation(id, data) {
