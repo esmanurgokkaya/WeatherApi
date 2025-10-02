@@ -22,9 +22,13 @@ class LocationModel {
   }
 
   async reverseGeocode(lat, lon) {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-    );
+    const url = new URL("https://nominatim.openstreetmap.org/reverse");
+    url.search = new URLSearchParams({
+      format: "json",
+      lat: lat,
+      lon: lon
+    }).toString();
+    const response = await fetch(url.toString());
     if (!response.ok) {
       const errorBody = await response.text();
       throw new Error(
