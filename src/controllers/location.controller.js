@@ -35,7 +35,8 @@ class LocationController {
             const decoded = await tokenService.verifyAccessToken(token);
             const userId = decoded.userId;
 
-            const { latitude, longitude } = req.body;
+            const validateData = ZodValidation.createLocationSchema.parse(req.body);
+            const { latitude, longitude } = validateData;
             if (!latitude || !longitude) {
                 return res.status(400).json(error("Latitude and Longitude are required"));
             }
@@ -44,16 +45,15 @@ class LocationController {
             const city = locationData.address?.city || locationData.address?.town || locationData.address?.village || null;
             const country = locationData.address?.country || null;
 
-            const location = await LocationService.createLocation({
-                latitude,
-                longitude,
-                city,
-                country,
-                userId
-            });
+            const location = await LocationService.createLocation({  city, country, ...validateData, userId });
 
             res.status(200).json(success("Location data fetched successfully", location));
         } catch (err) {
+            if (err.name === "ZodError") {
+                return res
+                    .status(400)
+                    .json(error("Validation error", formatZodErrors(err)));
+            }
             return res.status(500).json(error("Failed to fetch location data", err));
         }
     }
