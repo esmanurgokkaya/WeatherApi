@@ -1,6 +1,6 @@
 import LocationService from '../services/location.service.js';
 import tokenService from "../services/token.service.js";
-import { createLocationSchema } from '../utils/zod.schemas.js';
+import { createLocationSchema, updateLocationSchema } from '../utils/zod.schemas.js';
 import { success, error, formatZodErrors } from "../utils/api.response.js";
 class LocationController {
 
@@ -41,4 +41,31 @@ class LocationController {
             return res.status(500).json(error("Failed to retrieve location", err));
         }
         }
+
+    async updateLocation(req, res) {
+        try {
+            const locationId = req.params.id;
+            const updateData = updateLocationSchema.parse(req.body);
+            const updatedLocation = await LocationService.updateLocation(locationId, updateData);
+            res.status(200).json(success("Location updated successfully", updatedLocation));
+        } catch (err) {
+            if (err.name === "ZodError") {
+                return res
+                    .status(400)
+                    .json(error("Validation error", formatZodErrors(err)));
+            }
+            // Handle other server errors
+            return res.status(500).json(error("Failed to update location", err));
+        }   
     }
+
+    async deleteLocation(req, res) {
+        try {
+            const locationId = req.params.id;
+            await LocationService.deleteLocation(locationId);
+            res.status(200).json(success("Location deleted successfully"));
+        } catch (err) {
+            return res.status(500).json(error("Failed to delete location", err));
+        }
+    }
+}

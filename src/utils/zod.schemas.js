@@ -43,6 +43,14 @@ const createLocationSchema = z.object({
   // alerts, WeatherCache, user, createdAt, updatedAt gibi alanlar genellikle otomatik veya ilişkili olduğu için eklenmez
 });
 
+const updateLocationSchema = z.object({
+  city: z.string().min(2).max(100).optional(),
+  country: z.string().min(2).max(100).optional(),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
+});
+
+
 export default {
     registerSchema,
     loginSchema,
