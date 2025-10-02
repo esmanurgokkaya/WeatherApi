@@ -40,7 +40,23 @@ class LocationController {
         } catch (err) {
             return res.status(500).json(error("Failed to retrieve location", err));
         }
+    }
+
+    async getAllLocationsByUserId(req, res) {
+        try {
+            const token = req.headers.authorization?.split(" ")[1];
+            if (!token) {
+            return res.status(401).json(error("Authorization token is missing"));
+            }
+    
+            const decoded = await tokenService.verifyAccessToken(token);
+            const id = decoded.userId;
+            const locations = await LocationService.getAllLocationsByUserId(id);
+            res.status(200).json(success("Locations retrieved successfully", locations));
+        } catch (err) {
+            return res.status(500).json(error("Failed to retrieve locations", err));
         }
+    }
 
     async updateLocation(req, res) {
         try {
