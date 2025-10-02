@@ -8,3 +8,5 @@ router.get('/:id', authenticate, LocationController.getLocationById);
 router.get('/user/:user_id', authenticate, LocationController.getAllLocationsByUserId);
 router.put('/:id', authenticate, LocationController.updateLocation);
 router.delete('/:id', authenticate, LocationController.deleteLocation);
+
+export default router;
