@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/all', authenticate, LocationController.getAllLocationsByUserId);
 router.post('/', authenticate, LocationController.createLocation);
 router.get('/:id', authenticate, LocationController.getLocationById);
+router.post('/gps', authenticate, LocationController.reverseGeocode);
 router.put('/:id', authenticate, LocationController.updateLocation);
 router.delete('/:id', authenticate, LocationController.deleteLocation);
 
