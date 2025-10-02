@@ -26,7 +26,10 @@ class LocationModel {
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
     );
     if (!response.ok) {
-      throw new Error("Failed to fetch location data");
+      const errorBody = await response.text();
+      throw new Error(
+        `Failed to fetch location data. Status: ${response.status} ${response.statusText}. Response: ${errorBody}`
+      );
     }
     return await response.json();
   }
