@@ -39,11 +39,6 @@ class LocationController {
 
       const validateData = ZodValidation.createLocationSchema.parse(req.body);
       const { latitude, longitude } = validateData;
-      if (!latitude || !longitude) {
-        return res
-          .status(400)
-          .json(error("Latitude and Longitude are required"));
-      }
       const locationData = await LocationService.reverseGeocode(
         latitude,
         longitude
