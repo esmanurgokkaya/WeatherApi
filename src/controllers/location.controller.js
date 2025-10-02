@@ -26,6 +26,37 @@ class LocationController {
         }
     }
 
+    async reverseGeocode(req, res) {
+        try {
+            const token = req.headers.authorization?.split(" ")[1];
+            if (!token) {
+                return res.status(401).json(error("Authorization token is missing"));
+            }
+            const decoded = await tokenService.verifyAccessToken(token);
+            const userId = decoded.userId;
+
+            const { latitude, longitude } = req.body;
+            if (!latitude || !longitude) {
+                return res.status(400).json(error("Latitude and Longitude are required"));
+            }
+            const locationData = await LocationService.reverseGeocode(latitude, longitude);
+
+            const city = locationData.address?.city || locationData.address?.town || locationData.address?.village || null;
+            const country = locationData.address?.country || null;
+
+            const location = await LocationService.createLocation({
+                latitude,
+                longitude,
+                city,
+                country,
+                userId
+            });
+
+            res.status(200).json(success("Location data fetched successfully", location));
+        } catch (err) {
+            return res.status(500).json(error("Failed to fetch location data", err));
+        }
+    }
     async getLocationById(req, res) {
         try {
             const token = req.headers.authorization?.split(" ")[1];

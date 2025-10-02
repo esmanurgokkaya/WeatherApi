@@ -6,6 +6,14 @@ class LocationService {
         return await LocationModel.createLocation(data);
     }
 
+    async reverseGeocode(lat, lon) {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch location data');
+        }
+        return await response.json();
+    }
+    
     async getLocationById(id) {
         return await LocationModel.getLocationById(id);
     }
