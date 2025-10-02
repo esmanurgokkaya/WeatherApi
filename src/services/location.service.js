@@ -1,35 +1,36 @@
-import LocationModel from '../models/location.model.js';
+import LocationModel from "../models/location.model.js";
 
 class LocationService {
-
-    async createLocation(data) {
-        return await LocationModel.createLocation(data);
+  async createLocation(data) {
+    const location = await LocationModel.getAllLocationsWithCoordinates(
+      data.latitude,
+      data.longitude
+    );
+    if (location.length > 0) {
+      throw new Error("Location with the same coordinates already exists");
     }
+    return await LocationModel.createLocation(data);
+  }
 
-    async reverseGeocode(lat, lon) {
-        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch location data');
-        }
-        return await response.json();
-    }
-    
-    async getLocationById(id) {
-        return await LocationModel.getLocationById(id);
-    }
+  async reverseGeocode(lat, lon) {
+    return await LocationModel.reverseGeocode(lat, lon);
+  }
 
-    async getAllLocationsByUserId(userId) {
-        return await LocationModel.getAllLocationsByUserId(userId);
-    }
+  async getLocationById(id) {
+    return await LocationModel.getLocationById(id);
+  }
 
-    async updateLocation(id, data) {
-        return await LocationModel.updateLocation(id, data);
-    }
+  async getAllLocationsByUserId(userId) {
+    return await LocationModel.getAllLocationsByUserId(userId);
+  }
 
-    async deleteLocation(id) {
-        return await LocationModel.deleteLocation(id);
-    }
+  async updateLocation(id, data) {
+    return await LocationModel.updateLocation(id, data);
+  }
 
+  async deleteLocation(id) {
+    return await LocationModel.deleteLocation(id);
+  }
 }
 
 export default new LocationService();
