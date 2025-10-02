@@ -39,8 +39,6 @@ const createLocationSchema = z.object({
   country: z.string().min(2).max(100).optional(),
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
-  userId: z.string().min(1),
-  // alerts, WeatherCache, user, createdAt, updatedAt gibi alanlar genellikle otomatik veya ilişkili olduğu için eklenmez
 });
 
 const updateLocationSchema = z.object({
@@ -57,4 +55,5 @@ export default {
     updateUserSchema,
     updatePasswordSchema,
     createLocationSchema,
+    updateLocationSchema
 }
