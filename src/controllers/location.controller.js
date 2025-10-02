@@ -1,12 +1,12 @@
 import LocationService from '../services/location.service.js';
 import tokenService from "../services/token.service.js";
-import { createLocationSchema, updateLocationSchema } from '../utils/zod.schemas.js';
+import ZodValidation from '../utils/zod.schemas.js';
 import { success, error, formatZodErrors } from "../utils/api.response.js";
 class LocationController {
 
     async createLocation(req, res) {
         try {
-            const validateData = createLocationSchema.parse(req.body);
+            const validateData = ZodValidation.createLocationSchema.parse(req.body);
             const location = await LocationService.createLocation(validateData);
             res.status(201).json(success("Location created successfully", location));
         } catch (err) {
@@ -61,7 +61,7 @@ class LocationController {
     async updateLocation(req, res) {
         try {
             const locationId = req.params.id;
-            const updateData = updateLocationSchema.parse(req.body);
+            const updateData = ZodValidation.updateLocationSchema.parse(req.body);
             const updatedLocation = await LocationService.updateLocation(locationId, updateData);
             res.status(200).json(success("Location updated successfully", updatedLocation));
         } catch (err) {
@@ -85,3 +85,5 @@ class LocationController {
         }
     }
 }
+
+export default new LocationController();
