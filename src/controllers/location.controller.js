@@ -6,8 +6,15 @@ class LocationController {
 
     async createLocation(req, res) {
         try {
+            const token = req.headers.authorization?.split(" ")[1];
+            if (!token) {
+            return res.status(401).json(error("Authorization token is missing"));
+            }
+
+            const decoded = await tokenService.verifyAccessToken(token);
+            const id = decoded.userId;
             const validateData = ZodValidation.createLocationSchema.parse(req.body);
-            const location = await LocationService.createLocation(validateData);
+            const location = await LocationService.createLocation({ ...validateData, userId: id });
             res.status(201).json(success("Location created successfully", location));
         } catch (err) {
             if (err.name === "ZodError") {
@@ -15,8 +22,7 @@ class LocationController {
                     .status(400)
                     .json(error("Validation error", formatZodErrors(err)));
             }
-            // Handle other server errors
-            return res.status(500).json(error("Failed to create location", err.message || err));
+            return res.status(500).json(error("Failed to create location", err));
         }
     }
 
@@ -38,7 +44,7 @@ class LocationController {
 
             res.status(200).json(success("Location retrieved successfully", location));
         } catch (err) {
-            return res.status(500).json(error("Failed to retrieve location", err.message));
+            return res.status(500).json(error("Failed to retrieve location", err));
         }
     }
 
@@ -46,15 +52,18 @@ class LocationController {
         try {
             const token = req.headers.authorization?.split(" ")[1];
             if (!token) {
-            return res.status(401).json(error("Authorization token is missing"));
+                return res.status(401).json(error("Authorization token is missing"));
             }
-    
             const decoded = await tokenService.verifyAccessToken(token);
             const id = decoded.userId;
             const locations = await LocationService.getAllLocationsByUserId(id);
+            if (!locations || locations.length === 0) {
+                return res.status(200).json(success("No locations found", []));
+            }
+
             res.status(200).json(success("Locations retrieved successfully", locations));
         } catch (err) {
-            return res.status(500).json(error("Failed to retrieve locations", err.message || err));
+            return res.status(500).json(error("Failed to retrieve locations", err));
         }
     }
 
@@ -70,8 +79,7 @@ class LocationController {
                     .status(400)
                     .json(error("Validation error", formatZodErrors(err)));
             }
-            // Handle other server errors
-            return res.status(500).json(error("Failed to update location", err.message || err));
+            return res.status(500).json(error("Failed to update location", err));
         }   
     }
 
@@ -81,7 +89,7 @@ class LocationController {
             await LocationService.deleteLocation(locationId);
             res.status(200).json(success("Location deleted successfully"));
         } catch (err) {
-            return res.status(500).json(error("Failed to delete location", err.message || err));
+            return res.status(500).json(error("Failed to delete location", err));
         }
     }
 }
