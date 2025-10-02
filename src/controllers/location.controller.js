@@ -68,7 +68,7 @@ class LocationController {
           .json(error("Validation error", formatZodErrors(err)));
       }
       if (err.message === "Location with the same coordinates already exists") {
-        return res.status(409).json(error("Location is already exists'"));
+        return res.status(409).json(error("Location already exists"));
       }
       return res.status(500).json(error("Failed to fetch location data", err));
     }
