@@ -16,7 +16,7 @@ class LocationController {
                     .json(error("Validation error", formatZodErrors(err)));
             }
             // Handle other server errors
-            return res.status(500).json(error("Failed to create location", err));
+            return res.status(500).json(error("Failed to create location", err.message || err));
         }
     }
 
@@ -38,7 +38,7 @@ class LocationController {
 
             res.status(200).json(success("Location retrieved successfully", location));
         } catch (err) {
-            return res.status(500).json(error("Failed to retrieve location", err));
+            return res.status(500).json(error("Failed to retrieve location", err.message));
         }
     }
 
@@ -54,7 +54,7 @@ class LocationController {
             const locations = await LocationService.getAllLocationsByUserId(id);
             res.status(200).json(success("Locations retrieved successfully", locations));
         } catch (err) {
-            return res.status(500).json(error("Failed to retrieve locations", err));
+            return res.status(500).json(error("Failed to retrieve locations", err.message || err));
         }
     }
 
@@ -71,7 +71,7 @@ class LocationController {
                     .json(error("Validation error", formatZodErrors(err)));
             }
             // Handle other server errors
-            return res.status(500).json(error("Failed to update location", err));
+            return res.status(500).json(error("Failed to update location", err.message || err));
         }   
     }
 
@@ -81,7 +81,7 @@ class LocationController {
             await LocationService.deleteLocation(locationId);
             res.status(200).json(success("Location deleted successfully"));
         } catch (err) {
-            return res.status(500).json(error("Failed to delete location", err));
+            return res.status(500).json(error("Failed to delete location", err.message || err));
         }
     }
 }
