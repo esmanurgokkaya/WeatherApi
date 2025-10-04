@@ -1,6 +1,6 @@
 import weatherController from "../controllers/weather.controller.js";
-import exporess from "express";
-const router = exporess.Router();
+import express from "express";
+const router = express.Router();
 
 router.get("/current", weatherController.current);
 router.get("/daily", weatherController.daily);
