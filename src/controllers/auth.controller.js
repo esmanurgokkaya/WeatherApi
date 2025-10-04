@@ -4,77 +4,31 @@ import TokenService from "../services/token.service.js";
 import { success, error, formatZodErrors } from "../utils/api.response.js";
 
 class AuthController {
-  async register(req, res) {
+  async register(req, res, next) {
     try {
       const validateData = zodValidation.registerSchema.parse(req.body);
       const user = await AuthService.register(validateData);
       res.status(201).json(success("User registered successfully", user));
     } catch (err) {
       if (err.name === "ZodError") {
-        return res
-          .status(400)
-          .json(error("Validation error", formatZodErrors(err)));
+        return res.status(400).json(error("Validation error", formatZodErrors(err)));
       }
-      // Handle duplicate email or conflict errors
-      if (
-        err.code === 11000 || // MongoDB duplicate key error
-        err.code === "ER_DUP_ENTRY" || // MySQL duplicate entry
-        (err.message && err.message.toLowerCase().includes("email already exists"))
-      ) {
-        return res
-          .status(409)
-          .json(error("Conflict error: " + err.message, err.errors || null));
-      }
-      // Handle other server errors
-      res
-        .status(500)
-        .json(error("Registration failed: " + err.message, err.errors || null));
+      next(err); // AppError ise error middleware'e gider
     }
   }
 
-  async login(req, res) {
+  async login(req, res, next) {
     try {
       const validateData = zodValidation.loginSchema.parse(req.body);
-      const user = await AuthService.login(
-        validateData.email,
-        validateData.password
-      );
-      const accessToken = await TokenService.generateAccessToken(
-        user.id,
-        user.email
-      );
-      const refreshToken = await TokenService.generateRefreshToken(
-        user.id,
-        user.email
-      );
-      res.status(200).json(
-        success("Login successful", {
-          user,
-          accessToken,
-          refreshToken,
-        })
-      );
+      const user = await AuthService.login(validateData.email, validateData.password);
+      const accessToken = await TokenService.generateAccessToken(user.id, user.email);
+      const refreshToken = await TokenService.generateRefreshToken(user.id, user.email);
+      res.status(200).json(success("Login successful", { user, accessToken, refreshToken }));
     } catch (err) {
       if (err.name === "ZodError") {
-        return res
-          .status(400)
-          .json(error("Validation error", formatZodErrors(err)));
+        return res.status(400).json(error("Validation error", formatZodErrors(err)));
       }
-      // Check for authentication failure
-      if (
-        err.name === "AuthenticationError" ||
-        err.code === "AUTH_FAILED" ||
-        (typeof err.message === "string" &&
-          err.message.toLowerCase().includes("invalid email or password"))
-      ) {
-        return res
-          .status(401)
-          .json(error("Authentication failed: " + err.message, err.errors || null));
-      }
-      // For other errors, return 500
-      res
-        .status(500)
-        .json(error("Login failed: " + err.message, err.errors || null));
+      next(err);
     }
   }
 
