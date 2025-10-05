@@ -37,7 +37,7 @@ class WeatherService {
     });
     return data;
   }
-  static async getHourlyForecast(lat, lon) {
+  static async getHourlyForecast(lat, lon, locationId) {
     const response = await axios.get(`${OPENWEATHER_URL}/forecast`, {
       params: {
         lat,
