@@ -1,20 +1,31 @@
 import prisma from '../config/db.js';
 
-const Weather = prisma.WeatherCache;
+const Weather = prisma.weatherCache;
 
 class WeatherModel {
-
-    async createOrUpdateCache({ location, type, data }) {
-    return Weather.upsert({
-      where: { location_type: { location, type } },
-      update: { data, updatedAt: new Date() },
-      create: { location, type, data, updatedAt: new Date() },
+  async createOrUpdateCache({ locationId, type, data }) {
+    // Önce mevcut kaydı bul
+    const existing = await Weather.findFirst({
+      where: { locationId, type }
     });
+
+    if (existing) {
+      // Varsa güncelle
+      return Weather.update({
+        where: { id: existing.id },
+        data: { data, fetchedAt: new Date() }
+      });
+    } else {
+      // Yoksa oluştur
+      return Weather.create({
+        data: { locationId, type, data, fetchedAt: new Date() }
+      });
+    }
   }
 
-  async getCache({ location, type }) {
-    return Weather.findUnique({
-      where: { location_type: { location, type } },
+  async getCache({ locationId, type }) {
+    return Weather.findFirst({
+      where: { locationId, type }
     });
   }
 }
