@@ -75,7 +75,7 @@ model Alert {
 model WeatherCache {
   id          String   @id @default(cuid())
   location    Location @relation(fields: [locationId], references: [id])
-  locationId  String   @unique
+  locationId  String   
   type       String
   data        Json
   fetchedAt   DateTime @default(now())
