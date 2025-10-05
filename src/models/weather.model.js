@@ -3,7 +3,7 @@ import prisma from "../config/db.js";
 const Weather = prisma.weatherCache;
 
 class WeatherModel {
-  async createOrUpdateCache({ locationId, type, data }) {
+  static async createOrUpdateCache({ locationId, type, data }) {
     const existing = await Weather.findFirst({
       where: { locationId, type },
     });
