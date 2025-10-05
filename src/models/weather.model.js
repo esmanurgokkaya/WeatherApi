@@ -20,7 +20,7 @@ class WeatherModel {
     }
   }
 
-  async getCache({ locationId, type }) {
+  static async getCache({ locationId, type }) {
     return Weather.findFirst({
       where: { locationId, type },
     });
