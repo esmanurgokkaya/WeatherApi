@@ -35,7 +35,7 @@ class AlertController {
       const alert = await AlertService.createCustomAlert({ type, condition, userId, locationId });
       res.status(201).json(success("Custom alert created successfully", alert));
     } catch (err) {
-      console.error(err); // Terminalde gerçek hatayı gör
+      console.error(err); // View the actual error in the terminal
       return res.status(500).json(error("Failed to create alert", err.message || err));
     }
   }
