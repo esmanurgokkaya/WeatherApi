@@ -1,6 +1,6 @@
 import zodValidation from '../utils/zod.schemas.js';
 import preferencesService from '../services/preferences.service.js';
-import { success} from '../utils/api.response.js';
+import { success } from '../utils/api.response.js';
 
 class PreferencesController {
   async putUnits(req, res, next) {
