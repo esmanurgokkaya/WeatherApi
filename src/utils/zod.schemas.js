@@ -1,5 +1,6 @@
 // Validate with zod
-import z from "zod";
+import { z } from 'zod';
+
 // register data zod
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -48,6 +49,19 @@ const updateLocationSchema = z.object({
   longitude: z.number().min(-180).max(180).optional(),
 });
 
+const unitsPreferencesSchema = z.object({
+  temperature: z.union([
+    z.enum(['celsius','fahrenheit']),
+    z.enum(['C','F']),
+    z.string()
+  ]).optional(),
+  windSpeed: z.enum(['kmh','mph']).optional()
+});
+
+const notificationsPreferencesSchema = z.object({
+  notifyChannel: z.enum(['email','sms']).optional()
+});
+
 
 export default {
     registerSchema,
@@ -55,5 +69,7 @@ export default {
     updateUserSchema,
     updatePasswordSchema,
     createLocationSchema,
-    updateLocationSchema
-}
+    updateLocationSchema,
+    unitsPreferencesSchema,
+    notificationsPreferencesSchema
+};
